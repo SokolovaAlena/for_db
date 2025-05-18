@@ -3,17 +3,22 @@ import java.sql.*;
 import static java.sql.DriverManager.getConnection;
 
 public class Main {
-    public static final String URL = "jdbc:postgresql://37.187.147.153:8765/analyst";
+    public static final String URL = "jdbc:postgresql://37.187.147.153:8765/analyst?currentSchema=dex_courses";
     public static final String USER_NAME = "postgres";
     public static final String PASS = "rte2545rte";
+
+
 
     public static void main(String[] args) throws SQLException {
         Connection conn = null;
         PreparedStatement st = null;
+        PreparedStatement prep2 = null;
+        PreparedStatement prep3 = null;
+
         try {
             conn = getConnection();
-            st = conn.prepareStatement("SELECT * FROM dex_courses.artist "+
-                    " WHERE artist_id BETWEEN ? AND ?");
+            st = conn.prepareStatement("SELECT * FROM artist "+
+                    " WHERE artist_id=?");
             SetQueries(st);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -27,7 +32,6 @@ public class Main {
 
     private static void SetQueries(PreparedStatement st) throws SQLException {
         st.setInt(1,2);
-        st.setInt(2,10);
         ResultSet rs = st.executeQuery();
         System.out.println("Результат выборки:");
         while(rs.next()){
